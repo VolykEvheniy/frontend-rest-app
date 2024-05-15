@@ -20,7 +20,7 @@ const MOCK_USER_AUTH = {
 
 const MOCK_USER_AUTH_RESPONSE = {
   user: {
-    authorities: ['ENABLE_SEE_SECRET_PAGE'],
+    authorities: ['ENABLE_SEE_SECRET_PAGE', 'ENABLE_SEE_CARS_PAGE', 'ENABLE_SEE_CAR_DETAIL_PAGE'],
     email: 'adminMail@gmail.com',
     firstName: 'Адмiнич',
     id: '123',
