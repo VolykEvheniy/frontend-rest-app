@@ -2,7 +2,7 @@ import configureStore from "../../misc/redux/configureStore";
 import carDetailReducer from "./reducers";
 import useLocationSearch from "../../misc/hooks/useLocationSearch";
 import {useMemo} from "react";
-import getMessages from "../cars/intl";
+import getMessages from "./intl";
 import {Provider} from "react-redux";
 import IntlProvider from 'misc/providers/IntlProvider';
 import CarDetail from './containers/CarDetail'

@@ -1,0 +1,11 @@
+{
+  "model": "Model",
+  "brand": "Brand",
+  "country": "Country",
+  "year": "Year",
+  "colors": "Colors",
+  "price": "Price",
+  "edit" : "Edit",
+  "cancel": "Cancel",
+  "save" : "Save"
+}
