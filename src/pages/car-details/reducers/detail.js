@@ -3,6 +3,7 @@ import {
     FETCH_CAR_DETAIL_SUCCESS,
     FETCH_CAR_DETAIL_FAILURE,
     SET_EDIT_MODE, UPDATE_CAR_REQUEST, UPDATE_CAR_SUCCESS, UPDATE_CAR_FAILURE,
+    UPDATE_BRAND_REQUEST, UPDATE_BRAND_SUCCESS, UPDATE_BRAND_FAILURE,
 } from '../constants/actionTypes';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
 
 export default function carDetailReducer(state = initialState, action) {
     switch (action.type) {
+        case UPDATE_BRAND_REQUEST:
         case UPDATE_CAR_REQUEST:
         case FETCH_CAR_DETAIL_REQUEST:
             return {
@@ -27,8 +29,15 @@ export default function carDetailReducer(state = initialState, action) {
                 loading: false,
                 car: action.payload,
             }
+        case UPDATE_BRAND_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                car: {...state.car, brand: action.payload}
+            }
         case UPDATE_CAR_FAILURE:
         case FETCH_CAR_DETAIL_FAILURE:
+        case UPDATE_BRAND_FAILURE:
             return {
                 ...state,
                 loading: false,

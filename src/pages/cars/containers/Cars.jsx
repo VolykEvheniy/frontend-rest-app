@@ -54,7 +54,7 @@ const Cars = () => {
             />
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
 
-            {/* Pagination component could go here */}
+            {/* add pagination component here */}
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {fetchCar, setEditMode, updateCar} from "../actions/carDetailAction";
+import {fetchCar, setEditMode, updateCar, updateCarAndBrand} from "../actions/carDetailAction";
 import Loading from "../../../components/Loading";
 import TextField from "../../../components/TextField";
 import Button from "../../../components/Button";
@@ -9,6 +9,7 @@ import Error from '../components/Error';
 import Card from '../../../components/Card'
 import CardContent from '../../../components/CardContent'
 import Typography from '../../../components/Typography'
+import {toast, ToastContainer} from "react-toastify";
 
 
 const CarDetail = () => {
@@ -26,6 +27,8 @@ const CarDetail = () => {
         setFormData(car);
     }, [car]);
 
+    console.log("formData",formData);
+
     const toggleEditMode = () => {
         dispatch(setEditMode(!editMode));
     };
@@ -37,13 +40,14 @@ const CarDetail = () => {
         }));
     };
     const saveChanges = () => {
-        dispatch(updateCar(formData));
+        dispatch(updateCarAndBrand(formData));
+        toast.success('Car and brand were updated successfully');
     };
 
     return (
         <div style={{ padding: '20px' }}>
             {loading && <Loading />}
-            {error.length > 0 && <Error errors={error} />}
+            {error && error.length > 0 && <Error errors={error} />}
 
             <Card>
                 <CardContent>
@@ -66,7 +70,7 @@ const CarDetail = () => {
                             <TextField
                                 label="Country"
                                 value={formData.brand?.country || ''}
-                                onChange={(e) => handleInputChange('country', {...formData.brand, country: e.target.value})}
+                                onChange={(e) => handleInputChange('brand', {...formData.brand, country: e.target.value})}
                                 margin="normal"
                                 fullWidth
                             />
@@ -96,7 +100,8 @@ const CarDetail = () => {
                         <>
                             <Typography variant="h5" component="h2">{formData.name}</Typography>
                             <Typography color="textSecondary">
-                                Brand: {formData.brand ? formData.brand.name : 'N/A'}
+                                Brand: {formData.brand ? formData.brand.name : 'N/A'} <br/>
+                                Country: {formData.brand ? formData.brand.country : 'N/A'}
                             </Typography>
                             <Typography variant="body2" component="p">
                                 Model: {formData.model}<br />
@@ -111,6 +116,7 @@ const CarDetail = () => {
                         {editMode ? 'Cancel' : 'Edit'}
                     </Button>
                     {editMode && <Button onClick={saveChanges} color="primary">Save</Button>}
+                    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
                 </CardContent>
             </Card>
         </div>

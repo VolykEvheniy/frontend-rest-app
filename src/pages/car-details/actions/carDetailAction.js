@@ -8,7 +8,10 @@ import {
     SET_EDIT_MODE,
     UPDATE_CAR_SUCCESS,
     UPDATE_CAR_REQUEST,
-    UPDATE_CAR_FAILURE
+    UPDATE_CAR_FAILURE,
+    UPDATE_BRAND_SUCCESS,
+    UPDATE_BRAND_REQUEST,
+    UPDATE_BRAND_FAILURE
 } from '../constants/actionTypes';
 
 const requestCar = () => ({
@@ -44,6 +47,20 @@ const updateCarFailure = (error) => ({
     payload: error
 });
 
+const updateBrandRequest = () => ({
+    type: UPDATE_BRAND_REQUEST
+});
+
+const updateBrandSuccess = (brand) => ({
+    type: UPDATE_BRAND_SUCCESS,
+    payload: brand
+});
+
+const updateBrandFailure = (error) => ({
+    type: UPDATE_BRAND_FAILURE,
+    payload: error
+});
+
 
 
 export const fetchCar = (id) => (dispatch) => {
@@ -68,16 +85,24 @@ export const fetchCar = (id) => (dispatch) => {
 }
 
 export const updateCar = (car) => (dispatch) => {
+    console.log("Updating car", car)
+    const carData = {
+        model: car.model,
+        year: car.year,
+        color: car.color,
+        price: car.price,
+        brandId: car.brand.id,
+    }
     dispatch(updateCarRequest());
     const { CAR_SERVICE } = config;
-    return axios.put(`${CAR_SERVICE}/api/car/${car.id}`, car)
+    return axios.put(`${CAR_SERVICE}/api/car/${car.id}`, carData)
         .then(response => {
+            console.log("updating");
             const {brand, color, id, model, price, year} = response;
             const car = {
                 brand, color, id, model, price, year
             }
             dispatch(updateCarSuccess(car));
-            dispatch(setEditMode(false));
         })
         .catch(error => {
             const errorPayload = error.response && error.response.data
@@ -87,8 +112,46 @@ export const updateCar = (car) => (dispatch) => {
         });
 }
 
+export const updateBrand = (brand) => (dispatch) => {
+    const brandData = {
+        name: brand.name,
+        country: brand.country,
+    }
+
+    dispatch(updateBrandRequest())
+    const { CAR_SERVICE } = config;
+    axios.put(`${CAR_SERVICE}/api/brand/${brand.id}`, brandData)
+        .then(response => {
+            const {id, country, name} = response;
+            const brand = {
+                id, name, country
+            }
+            dispatch(updateBrandSuccess(brand))
+        })
+        .catch(error => {
+            const errorPayload = error.response && error.response.data
+                ? error.response.data.message || ["An error occurred"]
+                : ["An unexpected network error occurred"];
+            dispatch(updateBrandFailure(errorPayload));
+        })
+
+}
+
+export const  updateCarAndBrand = (car) => async (dispatch) => {
+    try {
+        await dispatch(updateBrand(car.brand));
+        await dispatch(updateCar(car))
+        dispatch(setEditMode(false));
+    } catch (error) {
+        const errorPayload = error.response && error.response.data
+            ? error.response.data.message || ["An error occurred"]
+            : ["An unexpected network error occurred"];
+        dispatch(updateCarFailure(errorPayload));
+    }
+}
+
 export default {
     fetchCar,
-    updateCar,
+    updateCarAndBrand,
 }
 
