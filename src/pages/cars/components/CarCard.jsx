@@ -26,17 +26,17 @@ const CarCard = ({car, onDelete}) => {
 
     return (
 
-            <Card variant="info">
-                <CardContent className={classes.cardContent}>
-                    <Link to={{pathname: carDetailLink}}>
-                        <Typography variant="title">{car.brand.name} {car.model}</Typography>
-                    </Link>
-                    <Typography variant="subTitle">{formatMessage({id: 'year'})} : {car.year}</Typography>
-                    <div>
-                        <DeleteBtn onDelete={onDelete} car={car}/>
-                    </div>
-                </CardContent>
-            </Card>
+        <Card variant="info">
+            <CardContent className={classes.cardContent}>
+                <Link to={{pathname: carDetailLink}}>
+                    <Typography variant="title">{car.brand.name} {car.model}</Typography>
+                </Link>
+                <Typography variant="subTitle">{formatMessage({id: 'year'})} : {car.year}</Typography>
+                <div>
+                    <DeleteBtn onDelete={onDelete} car={car}/>
+                </div>
+            </CardContent>
+        </Card>
 
     )
 }
