@@ -7,7 +7,8 @@ const useStyles = createUseStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: '10px'
+        gap: '10px',
+        marginTop: '10px'
     }
 });
 

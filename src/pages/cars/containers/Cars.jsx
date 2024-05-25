@@ -8,6 +8,7 @@ import { fetchCars, deleteCar } from '../actions/carActions';
 import Loading from "../../../components/Loading";
 import ErrorList from "../components/ErrorList";
 import CarCard from "../components/CarCard";
+import Filters from "../components/Filters";
 import Pagination from "../components/Pagination";
 import DeleteDialog from "../components/DeleteDialog";
 import Button from "../../../components/Button";
@@ -21,11 +22,12 @@ const Cars = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCarId, setSelectedCarId] = useState(null);
+    const [filters, setFilters] = useState({});
     const [localCars, setLocalCars] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchCars({ page: currentPage - 1, size: 10 }));
-    }, [dispatch, currentPage]);
+        dispatch(fetchCars({...filters, page: currentPage - 1, size: 10 }));
+    }, [dispatch, currentPage, filters]);
 
     useEffect(() => {
         setLocalCars(cars);
@@ -50,6 +52,11 @@ const Cars = () => {
         setCurrentPage(page);
     };
 
+    const applyFilters = (filterValues) => {
+        setFilters(filterValues);
+        setCurrentPage(1);
+    };
+
 
     return (
         <div>
@@ -57,6 +64,7 @@ const Cars = () => {
             {error && <ErrorList errors={error}/>}
 
             <Button onClick={handleAddCar}>Add Car</Button>
+            <Filters onApply={applyFilters} />
 
             {cars.map(car => (
                 <CarCard key={car.id} car={car} onDelete={handleDelete}/>
