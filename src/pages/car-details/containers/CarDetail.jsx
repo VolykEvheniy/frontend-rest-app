@@ -10,9 +10,18 @@ import {toast, ToastContainer} from "react-toastify";
 import CarEditForm from "../components/CarEditForm";
 import CarView from "../components/CarView";
 import CarActions from "../components/CarActions";
+import {createUseStyles} from "react-jss";
+
+
+const useStyles = createUseStyles({
+    content: {
+        padding: '30px'
+    }
+});
 
 
 const CarDetail = () => {
+    const classes = useStyles();
     const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -70,7 +79,7 @@ const CarDetail = () => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div className={classes.content}>
             {loading && <Loading />}
             {error && <Error errors={error} />}
 

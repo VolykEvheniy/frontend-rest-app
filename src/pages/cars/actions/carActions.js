@@ -42,7 +42,7 @@ const deleteCarFailure = (error) => ({
 
 
 
-export const fetchCars = (criteria = {page: 0, size: 10}) => (dispatch) => {
+export const fetchCars = (criteria) => (dispatch) => {
     dispatch(requestCars());
     const {CAR_SERVICE} = config
     return axios.post(`${CAR_SERVICE}/api/car/_list`, criteria)

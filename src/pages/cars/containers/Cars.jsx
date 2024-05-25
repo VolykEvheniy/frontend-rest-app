@@ -8,6 +8,7 @@ import { fetchCars, deleteCar } from '../actions/carActions';
 import Loading from "../../../components/Loading";
 import ErrorList from "../components/ErrorList";
 import CarCard from "../components/CarCard";
+import Pagination from "../components/Pagination";
 import DeleteDialog from "../components/DeleteDialog";
 import Button from "../../../components/Button";
 import pagesURLs from "constants/pagesURLs";
@@ -18,12 +19,13 @@ const Cars = () => {
     const navigate = useNavigate();
     const { cars, loading, error, totalPages } = useSelector(({car: reducerCar}) => reducerCar);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
     const [selectedCarId, setSelectedCarId] = useState(null);
     const [localCars, setLocalCars] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchCars({ page: 0, size: 10 }));
-    }, [dispatch]);
+        dispatch(fetchCars({ page: currentPage - 1, size: 10 }));
+    }, [dispatch, currentPage]);
 
     useEffect(() => {
         setLocalCars(cars);
@@ -44,6 +46,10 @@ const Cars = () => {
         navigate(`${pagesURLs[pages.carDetailPage]}/new`)
     }
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
 
     return (
         <div>
@@ -60,9 +66,8 @@ const Cars = () => {
                 onClose={() => setDeleteDialogOpen(false)}
                 onConfirm={handleConfirmDelete}
             />
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-
-            {/* add pagination component here */}
         </div>
     );
 };
