@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import {fetchCar, setEditMode, updateCarAndBrand} from "../actions/carDetailAction";
+import {fetchCar, updateCarAndBrand, addCar} from "../actions/carDetailAction";
 import Loading from "../../../components/Loading";
 import Error from '../components/Error';
 import Card from '../../../components/Card'
@@ -14,33 +14,42 @@ import CarActions from "../components/CarActions";
 
 const CarDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { car, loading, error, editMode } = useSelector(state => state.detail);
+    const { car, loading, error, editMode: initialEditMode } = useSelector(state => state.detail);
     const [formData, setFormData] = useState({});
     const [backupData, setBackupData] = useState({});
     const isNew = id === 'new'
+    const [editMode, setEditMode] = useState(isNew || initialEditMode);
 
-    console.log("Id", id);
-
-    console.log("isNew" , isNew)
 
     useEffect(() => {
-        dispatch(fetchCar(id));
-    }, [dispatch, id]);
+        if (!isNew) {
+            dispatch(fetchCar(id));
+        }
+    }, [dispatch, id, isNew]);
 
     useEffect(() => {
-        setFormData(car);
-    }, [car]);
+        if (!isNew) {
+            setFormData(car);
+            setBackupData(car);
+        }
 
-    console.log("formData",formData);
+    }, [car, isNew]);
+
 
     const toggleEditMode = () => {
         if (!editMode) {
-            setBackupData(formData)
+            setBackupData(formData);
+            setEditMode(true);
         } else {
-            setFormData(backupData)
+            if (isNew) {
+                navigate('/cars');
+            } else {
+                setFormData(backupData);
+                setEditMode(false);
+            }
         }
-        dispatch(setEditMode(!editMode));
     };
 
     const handleInputChange = (field, value) => {
@@ -50,8 +59,14 @@ const CarDetail = () => {
         }));
     };
     const saveChanges = () => {
-        dispatch(updateCarAndBrand(formData));
-        toast.success('Car and brand were updated successfully');
+        if (isNew) {
+            dispatch(addCar(formData));
+            navigate('/cars');
+        } else {
+            dispatch(updateCarAndBrand(formData));
+        }
+        setEditMode(false);
+        toast.success(isNew ? 'Car added successfully' : 'Car updated successfully');
     };
 
     return (
@@ -61,8 +76,12 @@ const CarDetail = () => {
 
             <Card>
                 <CardContent>
-                    {editMode ? <CarEditForm formData={formData} handleInputChange={handleInputChange}/> : <CarView carData={formData}/>}
-                    <CarActions editMode={editMode} toggleEditMode={toggleEditMode} saveChanges={saveChanges}/>
+                    {editMode ? (
+                        <CarEditForm formData={formData} handleInputChange={handleInputChange} />
+                    ) : (
+                        <CarView carData={formData} />
+                    )}
+                    <CarActions editMode={editMode} toggleEditMode={toggleEditMode} saveChanges={saveChanges} isNew={isNew}/>
                 </CardContent>
             </Card>
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />

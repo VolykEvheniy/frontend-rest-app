@@ -11,7 +11,10 @@ import {
     UPDATE_CAR_FAILURE,
     UPDATE_BRAND_SUCCESS,
     UPDATE_BRAND_REQUEST,
-    UPDATE_BRAND_FAILURE
+    UPDATE_BRAND_FAILURE,
+    ADD_CAR_SUCCESS,
+    ADD_CAR_REQUEST,
+    ADD_CAR_FAILURE
 } from '../constants/actionTypes';
 
 const requestCar = () => ({
@@ -58,6 +61,20 @@ const updateBrandSuccess = (brand) => ({
 
 const updateBrandFailure = (error) => ({
     type: UPDATE_BRAND_FAILURE,
+    payload: error
+});
+
+const addCarRequest = () => ({
+    type: ADD_CAR_REQUEST
+});
+
+const addCarSuccess = (car) => ({
+    type: ADD_CAR_SUCCESS,
+    payload: car
+});
+
+const addCarFailure = (error) => ({
+    type: ADD_CAR_FAILURE,
     payload: error
 });
 
@@ -150,8 +167,27 @@ export const  updateCarAndBrand = (car) => async (dispatch) => {
     }
 }
 
+export const addCar = (carData) => (dispatch) => {
+    dispatch(addCarRequest());
+    const { CAR_SERVICE } = config;
+    axios.post(`${CAR_SERVICE}/api/car`, carData)
+        .then(response => {
+            const { model, year, color, price, brand} = response;
+            const car = { model, year, color, price, brand}
+            dispatch(addCarSuccess(car))
+        })
+        .catch(error => {
+            const errorPayload = error.response && error.response.data
+                ? error.response.data.message || ["An error occurred"]
+                : ["An unexpected network error occurred"];
+            dispatch(addCarFailure(errorPayload));
+        })
+
+}
+
 export default {
     fetchCar,
     updateCarAndBrand,
+    addCar,
 }
 
