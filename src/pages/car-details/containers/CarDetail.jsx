@@ -24,6 +24,12 @@ const useStyles = createUseStyles({
     }
 });
 
+const validations = {
+    brand: (data) => data.brand?.name ? {} : { brand: 'Brand name is required' },
+    model: (data) => data.model ? {} : { model: 'Model is required' },
+
+};
+
 const CarDetail = () => {
     const { formatMessage } = useIntl();
     const classes = useStyles();
@@ -96,12 +102,12 @@ const CarDetail = () => {
 
     const validateFormData = (data) => {
         let errors = {};
-        if (!data.brand?.name) errors.brand = 'Brand name is required';
-        if (!data.model) errors.model = 'Model is required';
-        if (!data.brand?.country) errors.country = 'Country is required';
-        if (!data.year || data.year.length !== 4 || isNaN(data.year)) errors.year = 'Year must be a four-digit number';
-        if (!data.price || isNaN(data.price) || data.price <= 0) errors.price = 'Price must be a positive number';
-        if (!data.color) errors.color = 'Color is required';
+        if (!data.brand?.name) errors.brand = formatMessage({id: 'emptyBrand'});
+        if (!data.model) errors.model = formatMessage({id: 'emptyModel'});
+        if (!data.brand?.country) errors.country = formatMessage({id: 'emptyCountry'});
+        if (!data.year || data.year.length !== 4 || isNaN(data.year)) errors.year = formatMessage({id: 'yearValidation'});
+        if (!data.price || isNaN(data.price) || data.price <= 0) errors.price = formatMessage({id: 'priceValidation'});
+        if (!data.color) errors.color = formatMessage({id: 'emptyColor'});
         return errors;
     };
 

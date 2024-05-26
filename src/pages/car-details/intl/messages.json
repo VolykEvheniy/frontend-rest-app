@@ -9,5 +9,11 @@
   "cancel": "Cancel",
   "save" : "Save",
   "create" : "Create",
-  "back": "Back"
+  "back": "Back",
+  "emptyBrand": "Brand name is required",
+  "emptyModel": "Model is required",
+  "emptyCountry": "Country is required",
+  "yearValidation": "Year must be a four-digit number",
+  "priceValidation": "Price must be a positive number",
+  "emptyColor": "Color is required"
 }
