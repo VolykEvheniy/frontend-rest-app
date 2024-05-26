@@ -35,6 +35,7 @@ const CarDetail = () => {
     const [backupData, setBackupData] = useState({});
     const isNew = id === 'new'
     const [editMode, setEditMode] = useState(isNew || initialEditMode);
+    const [formErrors, setFormErrors] = useState({});
 
 
     useEffect(() => {
@@ -62,6 +63,7 @@ const CarDetail = () => {
             } else {
                 setFormData(backupData);
                 setEditMode(false);
+                setFormErrors({});
             }
         }
     };
@@ -73,6 +75,11 @@ const CarDetail = () => {
         }));
     };
     const saveChanges = () => {
+        const errors = validateFormData(formData);
+        if (Object.keys(errors).length > 0) {
+            setFormErrors(errors);
+            return;
+        }
         if (isNew) {
             dispatch(addCar(formData));
             navigate('/cars');
@@ -80,10 +87,22 @@ const CarDetail = () => {
             dispatch(updateCarAndBrand(formData));
         }
         setEditMode(false);
+        setFormErrors({});
         toast.success(isNew ? 'Car added successfully' : 'Car updated successfully');
     };
     const handleBack = () => {
         navigate('/cars');
+    };
+
+    const validateFormData = (data) => {
+        let errors = {};
+        if (!data.brand?.name) errors.brand = 'Brand name is required';
+        if (!data.model) errors.model = 'Model is required';
+        if (!data.brand?.country) errors.country = 'Country is required';
+        if (!data.year || data.year.length !== 4 || isNaN(data.year)) errors.year = 'Year must be a four-digit number';
+        if (!data.price || isNaN(data.price) || data.price <= 0) errors.price = 'Price must be a positive number';
+        if (!data.color) errors.color = 'Color is required';
+        return errors;
     };
 
     return (
@@ -103,7 +122,7 @@ const CarDetail = () => {
             <Card>
                 <CardContent>
                     {editMode ? (
-                        <CarEditForm formData={formData} handleInputChange={handleInputChange} />
+                        <CarEditForm formData={formData} handleInputChange={handleInputChange} errors={formErrors}/>
                     ) : (
                         <CarView carData={formData} />
                     )}
