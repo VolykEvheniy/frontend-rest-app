@@ -8,5 +8,6 @@
   "edit" : "Edit",
   "cancel": "Cancel",
   "save" : "Save",
-  "create" : "Create"
+  "create" : "Create",
+  "back": "Back"
 }

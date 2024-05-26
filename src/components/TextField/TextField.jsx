@@ -30,6 +30,7 @@ const TextField = ({
   onBlur,
   onChange,
   onSelect,
+    placeholder,
   required = false,
   value,
 }) => {
@@ -85,6 +86,7 @@ const TextField = ({
         isFocused: true,
       })}
       onSelect={onSelect}
+      placeholder={placeholder}
       sx={{
         '& .MuiInputBase-root:before': {
           display: 'none',

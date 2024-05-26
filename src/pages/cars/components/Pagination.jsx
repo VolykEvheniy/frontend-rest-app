@@ -1,6 +1,7 @@
 import Typography from 'components/Typography';
 import Button from 'components/Button';
 import {createUseStyles} from "react-jss";
+import {useIntl} from "react-intl";
 
 const useStyles = createUseStyles({
     pagination: {
@@ -14,17 +15,18 @@ const useStyles = createUseStyles({
 
 
 const Pagination = ( {currentPage, totalPages, onPageChange} ) => {
+    const { formatMessage } = useIntl();
     const classes = useStyles();
     return (
         <div className={classes.pagination}>
             <Button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage <= 1}>
-                Previous
+                {formatMessage({id: 'previous'})}
             </Button>
             <Typography>
-                Page {currentPage} of {totalPages}
+                {formatMessage({id: 'page'})} {currentPage} {formatMessage({id: 'of'})} {totalPages}
             </Typography>
             <Button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage >= totalPages}>
-                Next
+                {formatMessage({id: 'next'})}
             </Button>
         </div>
     );

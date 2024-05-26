@@ -2,5 +2,15 @@
    "year": "Year",
    "confirm": "Confirm",
    "cancel": "Cancel",
-   "deleteMessage": "Are you sure you want to delete this car from list?"
+   "deleteMessage": "Are you sure you want to delete this car from list?",
+   "addCar": "Add Car",
+   "applyFilters": "Apply",
+   "next": "Next",
+   "previous": "Previous",
+   "page": "Page",
+   "of": "of",
+   "minPrice": "Minimum Price",
+   "maxPrice": "Maximum Price",
+   "from": "from",
+   "to": "to"
 }

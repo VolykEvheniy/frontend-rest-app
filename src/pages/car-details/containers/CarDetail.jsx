@@ -5,22 +5,27 @@ import {fetchCar, updateCarAndBrand, addCar} from "../actions/carDetailAction";
 import Loading from "../../../components/Loading";
 import Error from '../components/Error';
 import Card from '../../../components/Card'
+import Button from '../../../components/Button'
 import CardContent from '../../../components/CardContent'
 import {toast, ToastContainer} from "react-toastify";
 import CarEditForm from "../components/CarEditForm";
 import CarView from "../components/CarView";
 import CarActions from "../components/CarActions";
 import {createUseStyles} from "react-jss";
+import {useIntl} from "react-intl";
 
 
 const useStyles = createUseStyles({
     content: {
         padding: '30px'
+    },
+    backBtn: {
+        marginBottom: '10px'
     }
 });
 
-
 const CarDetail = () => {
+    const { formatMessage } = useIntl();
     const classes = useStyles();
     const { id } = useParams();
     const navigate = useNavigate();
@@ -77,11 +82,23 @@ const CarDetail = () => {
         setEditMode(false);
         toast.success(isNew ? 'Car added successfully' : 'Car updated successfully');
     };
+    const handleBack = () => {
+        navigate('/cars');
+    };
 
     return (
         <div className={classes.content}>
             {loading && <Loading />}
             {error && <Error errors={error} />}
+
+            {isNew && (
+                <div className={classes.backBtn}>
+                    <Button onClick={handleBack} className={classes.backButton}>
+                        {formatMessage({id: 'back'})}
+                    </Button>
+                </div>
+
+            )}
 
             <Card>
                 <CardContent>

@@ -14,8 +14,21 @@ import DeleteDialog from "../components/DeleteDialog";
 import Button from "../../../components/Button";
 import pagesURLs from "constants/pagesURLs";
 import * as pages from "../../../constants/pages";
+import {useIntl} from "react-intl";
+import {createUseStyles} from "react-jss";
+
+const useStyles = createUseStyles({
+    container: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '10px',
+    }
+});
 
 const Cars = () => {
+    const classes = useStyles();
+    const { formatMessage } = useIntl();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { cars, loading, error, totalPages } = useSelector(({car: reducerCar}) => reducerCar);
@@ -25,7 +38,21 @@ const Cars = () => {
     const [filters, setFilters] = useState({});
     const [localCars, setLocalCars] = useState([]);
 
+
     useEffect(() => {
+        const savedFilters = localStorage.getItem('filters');
+        const savedPage = localStorage.getItem('currentPage');
+        if (savedFilters) {
+            setFilters(JSON.parse(savedFilters));
+        }
+        if (savedPage) {
+            setCurrentPage(Number(savedPage));
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('filters', JSON.stringify(filters))
+        localStorage.setItem('currentPage', currentPage.toString())
         dispatch(fetchCars({...filters, page: currentPage - 1, size: 10 }));
     }, [dispatch, currentPage, filters]);
 
@@ -63,8 +90,10 @@ const Cars = () => {
             {loading && <Loading variant="loading"/>}
             {error && <ErrorList errors={error}/>}
 
-            <Button onClick={handleAddCar}>Add Car</Button>
-            <Filters onApply={applyFilters} />
+            <div className={classes.container}>
+                <Button onClick={handleAddCar}>{formatMessage({id: 'addCar'})}</Button>
+                <Filters onApply={applyFilters} />
+            </div>
 
             {cars.map(car => (
                 <CarCard key={car.id} car={car} onDelete={handleDelete}/>
