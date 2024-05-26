@@ -72,39 +72,6 @@ export const deleteCar = (id) => (dispatch) => {
             dispatch(deleteCarFailure(errorPayload));
         })
 }
-
-// export const fetchCars = (criteria = {page: 0, size: 10}) => async (dispatch) => {
-//     dispatch(requestCars());
-//     const { CAR_SERVICE } = config;
-//
-//     try {
-//         const response = await fetch(`${CAR_SERVICE}/api/car/_list`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(criteria)
-//         });
-//
-//         if (!response.ok) {
-//             console.log('Network response was not ok');
-//         }
-//
-//         const data = await response.json();
-//         console.log("Parsed data", data);
-//         const { carResponseDtoList, totalPages } = data;
-//         dispatch(receiveCars({ cars: carResponseDtoList, totalPages }));
-//
-//     } catch (error) {
-//         console.error("Fetch cars error:", error);
-//         const errorPayload = error.response && error.response.data
-//             ? error.response.data.message || ["An error occurred"]
-//             : ["An unexpected network error occurred"];
-//         dispatch(carsError(errorPayload));
-//     }
-// }
-
-
 export default {
     fetchCars,
     deleteCar,
