@@ -27,6 +27,7 @@ import Header from '../components/Header';
 import IntlProvider from '../components/IntlProvider';
 import MissedPage from '../components/MissedPage';
 import SearchParamsConfigurator from '../components/SearchParamsConfigurator';
+import AuthHandler from "./AuthHandler";
 
 function App() {
   const dispatch = useDispatch();
@@ -73,6 +74,7 @@ function App() {
                 )}
                 {!isFetchingUser && (
                   <Routes>
+                    <Route path="/oauth/redirect" element={<AuthHandler />} />
                     <Route
                       element={<DefaultPage />}
                       path={`${pageURLs[pages.defaultPage]}`}

@@ -13,6 +13,7 @@
   "field.password": "Password",
   "field.passwordConfirm": "*Confirm password",
   "signIn": "Sign In",
+  "signInWithGoogle" : "Sign In with Google account",
   "signUp": "Sign Up",
   "signUp.error.EMPTY_SIGN_UP_LOGIN": "Login can't be empty",
   "signUp.error.EMPTY_SIGN_UP_EMAIL": "Email can't be empty",

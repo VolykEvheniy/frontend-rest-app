@@ -45,7 +45,7 @@ const deleteCarFailure = (error) => ({
 export const fetchCars = (criteria) => (dispatch) => {
     dispatch(requestCars());
     const {CAR_SERVICE} = config
-    return axios.post(`${CAR_SERVICE}/api/car/_list`, criteria)
+    return axios.post(`${CAR_SERVICE}/api/car/_list`, criteria, { withCredentials: true })
         .then(response => {
             const { carResponseDtoList, totalPages } = response;
             dispatch(receiveCars({ cars: carResponseDtoList, totalPages }));
@@ -61,7 +61,7 @@ export const fetchCars = (criteria) => (dispatch) => {
 export const deleteCar = (id) => (dispatch) => {
     dispatch(deleteCarRequest())
     const {CAR_SERVICE} = config
-    return axios.delete(`${CAR_SERVICE}/api/car/${id}`)
+    return axios.delete(`${CAR_SERVICE}/api/car/${id}`, { withCredentials: true })
         .then(response => {
             dispatch(deleteCarSuccess(id))
         })

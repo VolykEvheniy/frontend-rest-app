@@ -83,14 +83,13 @@ const addCarFailure = (error) => ({
 export const fetchCar = (id) => (dispatch) => {
     dispatch(requestCar());
     const {CAR_SERVICE} = config;
-    return axios.get(`${CAR_SERVICE}/api/car/${id}`)
+    return axios.get(`${CAR_SERVICE}/api/car/${id}`, { withCredentials: true })
         .then(response => {
             const {brand, color, id, model, price, year} = response;
             const car = {
                 brand, color, id, model, price, year
             }
             dispatch(receiveCarSuccess(car))
-            console.log("CAR", car)
         })
         .catch(error => {
                 const errorPayload = error.response && error.response.data
@@ -102,7 +101,6 @@ export const fetchCar = (id) => (dispatch) => {
 }
 
 export const updateCar = (car) => (dispatch) => {
-    console.log("Updating car", car)
     const carData = {
         model: car.model,
         year: car.year,
@@ -112,7 +110,7 @@ export const updateCar = (car) => (dispatch) => {
     }
     dispatch(updateCarRequest());
     const { CAR_SERVICE } = config;
-    return axios.put(`${CAR_SERVICE}/api/car/${car.id}`, carData)
+    return axios.put(`${CAR_SERVICE}/api/car/${car.id}`, carData, { withCredentials: true })
         .then(response => {
             console.log("updating");
             const {brand, color, id, model, price, year} = response;
@@ -137,7 +135,7 @@ export const updateBrand = (brand) => (dispatch) => {
 
     dispatch(updateBrandRequest())
     const { CAR_SERVICE } = config;
-    axios.put(`${CAR_SERVICE}/api/brand/${brand.id}`, brandData)
+    axios.put(`${CAR_SERVICE}/api/brand/${brand.id}`, brandData, { withCredentials: true })
         .then(response => {
             const {id, country, name} = response;
             const brand = {
@@ -170,7 +168,7 @@ export const  updateCarAndBrand = (car) => async (dispatch) => {
 export const addCar = (carData) => (dispatch) => {
     dispatch(addCarRequest());
     const { CAR_SERVICE } = config;
-    axios.post(`${CAR_SERVICE}/api/car`, carData)
+    axios.post(`${CAR_SERVICE}/api/car`, carData, { withCredentials: true })
         .then(response => {
             const { model, year, color, price, brand} = response;
             const car = { model, year, color, price, brand}
