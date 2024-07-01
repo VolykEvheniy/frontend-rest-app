@@ -168,7 +168,17 @@ export const  updateCarAndBrand = (car) => async (dispatch) => {
 export const addCar = (carData) => (dispatch) => {
     dispatch(addCarRequest());
     const { CAR_SERVICE } = config;
-    axios.post(`${CAR_SERVICE}/api/car`, carData, { withCredentials: true })
+
+    const carDataRequest = {
+        brandName: carData.brand.name,
+        brandCountry: carData.brand.country,
+        model: carData.model,
+        year: carData.year,
+        price: carData.price,
+        color: carData.color,
+    };
+
+    axios.post(`${CAR_SERVICE}/api/car`, carDataRequest, { withCredentials: true })
         .then(response => {
             const { model, year, color, price, brand} = response;
             const car = { model, year, color, price, brand}
