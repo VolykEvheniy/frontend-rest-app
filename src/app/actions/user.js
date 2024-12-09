@@ -20,7 +20,7 @@ const MOCK_USER_AUTH = {
 
 const MOCK_USER_AUTH_RESPONSE = {
   user: {
-    authorities: ['ENABLE_SEE_SECRET_PAGE'],
+    authorities: ['ENABLE_SEE_SECRET_PAGE', 'ENABLE_SEE_CARS_PAGE', 'ENABLE_SEE_CAR_DETAIL_PAGE'],
     email: 'adminMail@gmail.com',
     firstName: 'Адмiнич',
     id: '123',
@@ -124,6 +124,25 @@ const fetchRefreshToken = () => (dispatch) => {
 
 };
 
+const fetchProfile = () => (dispatch) => {
+  const {
+    CAR_SERVICE,
+  } = config;
+  return axios.get(`${CAR_SERVICE}/api/profile`, { withCredentials: true })
+      .then(response => {
+        const user = {
+          ...response,
+          firstName: response.name
+        };
+        storage.setItem('USER', JSON.stringify(user));
+        dispatch(successSignIn(user));
+      })
+      .catch(error => {
+        console.error("Failed to fetch user profile", error);
+        dispatch(fetchSignOut());
+      });
+};
+
 const fetchSignIn = ({
   email,
   login,
@@ -178,9 +197,6 @@ const fetchSignUp = ({
 };
 
 const fetchUser = () => (dispatch) => {
-  if (!storage.getItem(keys.TOKEN)) {
-    return null;
-  }
   dispatch(requestUser());
   return getUser()
     // TODO Mocked '.catch()' section
@@ -202,6 +218,8 @@ const exportFunctions = {
   fetchSignOut,
   fetchSignUp,
   fetchUser,
+  fetchProfile,
+  successSignIn,
 };
 
 export default exportFunctions;

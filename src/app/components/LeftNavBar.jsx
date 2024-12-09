@@ -21,12 +21,19 @@ const getClasses = createUseStyles((theme) => ({
 }));
 
 const menuItems = [
-  {
-    icon: <IconLockOpen />,
-    link: `${pagesURLs[pages.secretPage]}`,
-    neededAuthorities: [authorities.ENABLE_SEE_SECRET_PAGE],
-    titleIntlId: `page.${pages.secretPage}`,
-  },
+    {
+        icon: <IconLockOpen/>,
+        link: `${pagesURLs[pages.secretPage]}`,
+        neededAuthorities: [authorities.ENABLE_SEE_SECRET_PAGE],
+        titleIntlId: `page.${pages.secretPage}`,
+    },
+    {
+        icon: <IconLockOpen/>,
+        link: `${pagesURLs[pages.carsPage]}`,
+        neededAuthorities: [authorities.ENABLE_SEE_CARS_PAGE],
+        titleIntlId: `page.${pages.carsPage}`,
+    },
+
 ];
 
 function LeftNavBar() {

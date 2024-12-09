@@ -17,6 +17,7 @@ import TextField from 'components/TextField';
 import Typography from 'components/Typography';
 
 import * as errorCodes from '../constants/errorCodes';
+import config from "../../../config";
 
 const getClasses = createUseStyles((theme) => ({
   buttons: {
@@ -69,6 +70,7 @@ function Login({
   const { formatMessage } = useIntl();
   const { theme } = useTheme();
   const classes = getClasses({ theme });
+  const {CAR_SERVICE} = config
   const [state, setState] = useState({
     emailOrLogin: '',
     externalErrors: [],
@@ -142,6 +144,10 @@ function Login({
       onCancelSignUp();
     }
   }, [isFetchingSignUp, isFailedSignUp]);
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${CAR_SERVICE}/oauth/authenticate`;
+  };
 
   return (
     <div className={classes.container}>
@@ -219,6 +225,11 @@ function Login({
             </Typography>
           </Button>
         </div>
+        <Button onClick={handleGoogleLogin} variant="primary">
+          <Typography color="inherit">
+            <strong>{formatMessage({ id: 'signInWithGoogle' })}</strong>
+          </Typography>
+        </Button>
       </div>
       <Dialog
         maxWidth="xs"
